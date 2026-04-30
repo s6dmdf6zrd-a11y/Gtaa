@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متجر حسابات GTA</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+–bg: #0a0a0e;
+–card: #111118;
+–border: rgba(255,165,0,0.15);
+–orange: #ff8c00;
+–orange2: #ffa500;
+–red: #e63946;
+–white: #f0efe8;
+–gray: rgba(240,239,232,0.4);
+–green: #25d366;
+}
+
+body {
+font-family: ‘Tajawal’, sans-serif;
+background: var(–bg);
+color: var(–white);
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* BG Effect */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background:
+radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,140,0,0.07) 0%, transparent 60%),
+radial-gradient(ellipse 40% 40% at 90% 80%, rgba(230,57,70,0.06) 0%, transparent 50%);
+pointer-events: none;
+z-index: 0;
+}
+
+/* HEADER */
+header {
+position: sticky;
+top: 0;
+z-index: 100;
+background: rgba(10,10,14,0.92);
+backdrop-filter: blur(12px);
+border-bottom: 1px solid var(–border);
+padding: 1rem 1.5rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.logo {
+display: flex;
+align-items: center;
+gap: 0.6rem;
+}
+.logo-icon { font-size: 1.6rem; }
+.logo-text {
+font-size: 1.2rem;
+font-weight: 900;
+background: linear-gradient(135deg, var(–orange), var(–orange2));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+letter-spacing: -0.5px;
+}
+
+.cart-btn {
+background: rgba(255,140,0,0.1);
+border: 1px solid rgba(255,140,0,0.3);
+border-radius: 12px;
+padding: 0.5rem 1rem;
+color: var(–orange);
+font-family: ‘Tajawal’, sans-serif;
+font-size: 0.9rem;
+font-weight: 700;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+transition: all 0.3s;
+}
+.cart-btn:hover { background: rgba(255,140,0,0.2); }
+.cart-count {
+background: var(–orange);
+color: #000;
+border-radius: 99px;
+width: 20px; height: 20px;
+font-size: 0.7rem;
+display: flex; align-items: center; justify-content: center;
+font-weight: 900;
+}
+
+/* HERO */
+.hero {
+position: relative;
+z-index: 1;
+text-align: center;
+padding: 3rem 1.5rem 2rem;
+}
+.hero h1 {
+font-size: clamp(2rem, 8vw, 3.5rem);
+font-weight: 900;
+line-height: 1.1;
+letter-spacing: -1px;
+}
+.hero h1 span {
+background: linear-gradient(135deg, var(–orange), #ffcc00);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+.hero p {
+margin-top: 0.8rem;
+color: var(–gray);
+font-size: 0.95rem;
+}
+
+/* ACCOUNTS GRID */
+.section {
+position: relative;
+z-index: 1;
+padding: 1.5rem;
+max-width: 900px;
+margin: 0 auto;
+}
+
+.section-title {
+font-size: 0.75rem;
+letter-spacing: 3px;
+color: var(–orange);
+text-transform: uppercase;
+margin-bottom: 1.2rem;
+display: flex;
+align-items: center;
+gap: 0.8rem;
+}
+.section-title::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: var(–border);
+}
+
+.accounts-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 1rem;
+}
+
+/* ACCOUNT CARD */
+.account-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 18px;
+overflow: hidden;
+transition: all 0.3s ease;
+position: relative;
+}
+.account-card:hover {
+border-color: rgba(255,140,0,0.4);
+transform: translateY(-4px);
+box-shadow: 0 12px 40px rgba(255,140,0,0.1);
+}
+
+.card-img {
+width: 100%;
+height: 180px;
+object-fit: cover;
+display: block;
+position: relative;
+}
+
+.card-img-wrap {
+position: relative;
+overflow: hidden;
+}
+
+.card-img-wrap img {
+width: 100%;
+height: 180px;
+object-fit: cover;
+display: block;
+transition: transform 0.4s ease;
+}
+.account-card:hover .card-img-wrap img { transform: scale(1.05); }
+
+.sold-badge {
+position: absolute;
+top: 10px;
+right: 10px;
+background: rgba(230,57,70,0.9);
+color: white;
+font-size: 0.7rem;
+font-weight: 900;
+letter-spacing: 1px;
+padding: 3px 10px;
+border-radius: 99px;
+display: none;
+}
+.account-card.sold .sold-badge { display: block; }
+
+.hot-badge {
+position: absolute;
+top: 10px;
+left: 10px;
+background: linear-gradient(135deg, var(–orange), #ffcc00);
+color: #000;
+font-size: 0.7rem;
+font-weight: 900;
+padding: 3px 10px;
+border-radius: 99px;
+}
+
+.card-body { padding: 1.2rem; }
+
+.card-title {
+font-size: 1rem;
+font-weight: 900;
+margin-bottom: 0.8rem;
+color: var(–white);
+}
+
+.card-stats {
+display: flex;
+flex-wrap: wrap;
+gap: 0.5rem;
+margin-bottom: 1rem;
+}
+.stat-pill {
+background: rgba(255,255,255,0.05);
+border: 1px solid rgba(255,255,255,0.08);
+border-radius: 8px;
+padding: 0.3rem 0.7rem;
+font-size: 0.78rem;
+color: var(–gray);
+display: flex;
+align-items: center;
+gap: 0.3rem;
+}
+.stat-pill span { color: var(–white); font-weight: 700; }
+
+.card-footer {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.price {
+font-size: 1.2rem;
+font-weight: 900;
+color: var(–orange);
+}
+.price small {
+font-size: 0.7rem;
+color: var(–gray);
+font-weight: 400;
+}
+
+.add-cart-btn {
+background: linear-gradient(135deg, var(–orange), var(–orange2));
+border: none;
+border-radius: 10px;
+padding: 0.5rem 1.1rem;
+color: #000;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 0.85rem;
+font-weight: 900;
+cursor: pointer;
+transition: all 0.3s;
+}
+.add-cart-btn:hover { opacity: 0.85; transform: scale(1.05); }
+.add-cart-btn:disabled {
+background: rgba(255,255,255,0.1);
+color: var(–gray);
+cursor: not-allowed;
+transform: none;
+}
+
+/* CART SIDEBAR */
+.overlay {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.7);
+z-index: 200;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.3s;
+backdrop-filter: blur(4px);
+}
+.overlay.show { opacity: 1; pointer-events: all; }
+
+.cart-sidebar {
+position: fixed;
+top: 0; left: 0;
+width: min(380px, 100vw);
+height: 100vh;
+background: #111118;
+border-left: 1px solid var(–border);
+z-index: 300;
+transform: translateX(-100%);
+transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+display: flex;
+flex-direction: column;
+overflow: hidden;
+}
+.cart-sidebar.open { transform: translateX(0); }
+
+.cart-header {
+padding: 1.5rem;
+border-bottom: 1px solid var(–border);
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+.cart-header h2 { font-size: 1.1rem; font-weight: 900; }
+.close-btn {
+background: rgba(255,255,255,0.07);
+border: none;
+border-radius: 8px;
+width: 34px; height: 34px;
+color: var(–white);
+font-size: 1.1rem;
+cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+transition: background 0.2s;
+}
+.close-btn:hover { background: rgba(255,255,255,0.12); }
+
+.cart-items {
+flex: 1;
+overflow-y: auto;
+padding: 1rem 1.5rem;
+}
+
+.cart-item {
+display: flex;
+align-items: center;
+gap: 0.8rem;
+padding: 0.8rem 0;
+border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.cart-item img {
+width: 50px; height: 50px;
+border-radius: 8px;
+object-fit: cover;
+}
+.cart-item-info { flex: 1; }
+.cart-item-name { font-size: 0.85rem; font-weight: 700; }
+.cart-item-price { font-size: 0.8rem; color: var(–orange); }
+.remove-btn {
+background: rgba(230,57,70,0.1);
+border: none;
+border-radius: 6px;
+color: var(–red);
+width: 28px; height: 28px;
+cursor: pointer;
+font-size: 0.85rem;
+display: flex; align-items: center; justify-content: center;
+}
+
+.cart-empty {
+text-align: center;
+padding: 3rem 1rem;
+color: var(–gray);
+}
+.cart-empty-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+
+.cart-footer {
+padding: 1.5rem;
+border-top: 1px solid var(–border);
+}
+.cart-total {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
+}
+.cart-total span { color: var(–gray); font-size: 0.9rem; }
+.cart-total strong { font-size: 1.2rem; color: var(–orange); }
+
+.checkout-btn {
+width: 100%;
+padding: 0.9rem;
+background: linear-gradient(135deg, var(–orange), var(–orange2));
+border: none;
+border-radius: 12px;
+color: #000;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 1rem;
+font-weight: 900;
+cursor: pointer;
+transition: all 0.3s;
+}
+.checkout-btn:hover { opacity: 0.9; }
+
+/* ORDER MODAL */
+.modal-overlay {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.85);
+z-index: 400;
+display: none;
+align-items: center;
+justify-content: center;
+padding: 1rem;
+backdrop-filter: blur(6px);
+}
+.modal-overlay.show { display: flex; }
+
+.modal {
+background: #111118;
+border: 1px solid var(–border);
+border-radius: 20px;
+width: 100%;
+max-width: 420px;
+overflow: hidden;
+animation: modalIn 0.3s ease;
+}
+@keyframes modalIn {
+from { transform: scale(0.9); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+padding: 1.5rem;
+background: linear-gradient(135deg, rgba(255,140,0,0.1), transparent);
+border-bottom: 1px solid var(–border);
+text-align: center;
+}
+.modal-header h3 { font-size: 1.2rem; font-weight: 900; }
+.modal-header p { font-size: 0.85rem; color: var(–gray); margin-top: 0.3rem; }
+
+.modal-body { padding: 1.5rem; }
+
+.order-summary {
+background: rgba(255,140,0,0.06);
+border: 1px solid rgba(255,140,0,0.15);
+border-radius: 12px;
+padding: 1rem;
+margin-bottom: 1.2rem;
+}
+.order-summary-title {
+font-size: 0.75rem;
+letter-spacing: 2px;
+color: var(–orange);
+text-transform: uppercase;
+margin-bottom: 0.8rem;
+}
+.order-item {
+display: flex;
+justify-content: space-between;
+font-size: 0.85rem;
+padding: 0.3rem 0;
+color: var(–gray);
+}
+.order-item strong { color: var(–white); }
+.order-total {
+border-top: 1px solid var(–border);
+margin-top: 0.5rem;
+padding-top: 0.5rem;
+display: flex;
+justify-content: space-between;
+font-weight: 900;
+font-size: 1rem;
+}
+.order-total span { color: var(–orange); }
+
+.form-group { margin-bottom: 1rem; }
+.form-group label {
+display: block;
+font-size: 0.82rem;
+color: var(–gray);
+margin-bottom: 0.4rem;
+font-weight: 700;
+}
+.form-group input, .form-group select {
+width: 100%;
+background: rgba(255,255,255,0.05);
+border: 1px solid rgba(255,255,255,0.1);
+border-radius: 10px;
+padding: 0.75rem 1rem;
+color: var(–white);
+font-family: ‘Tajawal’, sans-serif;
+font-size: 0.95rem;
+outline: none;
+transition: border-color 0.3s;
+direction: ltr;
+text-align: right;
+}
+.form-group input:focus, .form-group select:focus {
+border-color: var(–orange);
+}
+.form-group select { direction: rtl; }
+.form-group select option { background: #111118; }
+
+.contact-type {
+display: flex;
+gap: 0.5rem;
+margin-bottom: 1rem;
+}
+.type-btn {
+flex: 1;
+padding: 0.6rem;
+border-radius: 10px;
+border: 1px solid rgba(255,255,255,0.1);
+background: transparent;
+color: var(–gray);
+font-family: ‘Tajawal’, sans-serif;
+font-size: 0.85rem;
+font-weight: 700;
+cursor: pointer;
+transition: all 0.3s;
+}
+.type-btn.active {
+border-color: var(–green);
+background: rgba(37,211,102,0.1);
+color: var(–green);
+}
+.type-btn.telegram.active {
+border-color: #2aabee;
+background: rgba(42,171,238,0.1);
+color: #2aabee;
+}
+
+.send-btn {
+width: 100%;
+padding: 0.9rem;
+background: linear-gradient(135deg, #25d366, #128c7e);
+border: none;
+border-radius: 12px;
+color: #fff;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 1rem;
+font-weight: 900;
+cursor: pointer;
+transition: all 0.3s;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 0.5rem;
+}
+.send-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.modal-close {
+width: 100%;
+padding: 0.7rem;
+background: transparent;
+border: 1px solid rgba(255,255,255,0.1);
+border-radius: 12px;
+color: var(–gray);
+font-family: ‘Tajawal’, sans-serif;
+font-size: 0.9rem;
+cursor: pointer;
+margin-top: 0.6rem;
+transition: all 0.2s;
+}
+.modal-close:hover { border-color: rgba(255,255,255,0.2); color: var(–white); }
+
+/* SUCCESS */
+.success-screen {
+display: none;
+text-align: center;
+padding: 2.5rem 1.5rem;
+}
+.success-screen.show { display: block; }
+.success-icon { font-size: 4rem; margin-bottom: 1rem; animation: pop 0.5s ease; }
+@keyframes pop {
+0% { transform: scale(0); }
+70% { transform: scale(1.2); }
+100% { transform: scale(1); }
+}
+.success-screen h3 { font-size: 1.3rem; font-weight: 900; margin-bottom: 0.5rem; }
+.success-screen p { color: var(–gray); font-size: 0.9rem; line-height: 1.6; }
+
+/* TOAST */
+.toast {
+position: fixed;
+bottom: 2rem;
+left: 50%;
+transform: translateX(-50%) translateY(100px);
+background: rgba(255,140,0,0.95);
+color: #000;
+padding: 0.7rem 1.5rem;
+border-radius: 99px;
+font-weight: 700;
+font-size: 0.9rem;
+z-index: 999;
+transition: transform 0.3s ease;
+white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+footer {
+text-align: center;
+padding: 2rem;
+color: rgba(240,239,232,0.2);
+font-size: 0.8rem;
+position: relative;
+z-index: 1;
+}
+</style>
+
+</head>
+<body>
+
+<!-- HEADER -->
+
+<header>
+  <div class="logo">
+    <span class="logo-icon">🎮</span>
+    <span class="logo-text">GTA Store IQ</span>
+  </div>
+  <button class="cart-btn" onclick="toggleCart()">
+    🛒 السلة
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
+</header>
+
+<!-- HERO -->
+
+<div class="hero">
+  <h1>حسابات <span>GTA Online</span><br>بأفضل الأسعار</h1>
+  <p>حسابات موثوقة مع ضمان التسليم السريع 🔥</p>
+</div>
+
+<!-- ACCOUNTS -->
+
+<div class="section">
+  <div class="section-title">الحسابات المتاحة</div>
+  <div class="accounts-grid" id="accountsGrid"></div>
+</div>
+
+<footer>© 2024 GTA Store IQ — جميع الحقوق محفوظة</footer>
+
+<!-- OVERLAY -->
+
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<!-- CART SIDEBAR -->
+
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>🛒 سلة الشراء</h2>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span>المجموع:</span>
+      <strong id="cartTotal">0 د.ع</strong>
+    </div>
+    <button class="checkout-btn" onclick="openModal()">متابعة الشراء ←</button>
+  </div>
+</div>
+
+<!-- ORDER MODAL -->
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div id="orderForm">
+      <div class="modal-header">
+        <h3>🛍️ إتمام الطلب</h3>
+        <p>أدخل بياناتك وسنتواصل معك فوراً</p>
+      </div>
+      <div class="modal-body">
+        <div class="order-summary">
+          <div class="order-summary-title">ملخص الطلب</div>
+          <div id="orderItems"></div>
+          <div class="order-total">
+            <div>المجموع الكلي</div>
+            <span id="orderTotal">0 د.ع</span>
+          </div>
+        </div>
+
+```
+    <div class="form-group">
+      <label>اسمك الكريم</label>
+      <input type="text" id="customerName" placeholder="أدخل اسمك">
+    </div>
+
+    <div class="form-group">
+      <label>طريقة التواصل</label>
+      <div class="contact-type">
+        <button class="type-btn active" id="waBtn" onclick="setType('whatsapp')">📱 واتساب</button>
+        <button class="type-btn telegram" id="tgBtn" onclick="setType('telegram')">✈️ تيليقرام</button>
+      </div>
+      <input type="tel" id="customerContact" placeholder="رقم الواتساب (مع رمز الدولة)">
+    </div>
+
+    <button class="send-btn" onclick="sendOrder()">
+      <span>📨</span> إرسال الطلب
+    </button>
+    <button class="modal-close" onclick="closeModal()">إلغاء</button>
+  </div>
+</div>
+
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">✅</div>
+  <h3>تم إرسال طلبك!</h3>
+  <p>سنتواصل معك قريباً على رقمك<br>شكراً لثقتك بنا 🙏</p>
+  <button class="send-btn" style="margin-top:1.5rem" onclick="closeModal()">حسناً</button>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+const OWNER_WHATSAPP = '9647715882465';
+
+const accounts = [
+  {
+    id: 1,
+    name: 'حساب GTA Online — مميز',
+    price: 35000,
+    level: Math.floor(Math.random() * 200) + 50,
+    money: '500,000,000',
+    cars: 'سيارات ديلوكس',
+    image: 'https://upload.wikimedia.org/wikipedia/en/a/a5/GTA_V.png',
+    hot: true,
+    sold: false
+  }
+];
+
+let cart = [];
+let contactType = 'whatsapp';
+
+// ===== RENDER ACCOUNTS =====
+function renderAccounts() {
+  const grid = document.getElementById('accountsGrid');
+  grid.innerHTML = accounts.map(acc => `
+    <div class="account-card ${acc.sold ? 'sold' : ''}">
+      <div class="card-img-wrap">
+        <img src="${acc.image}" alt="${acc.name}" onerror="this.src='https://placehold.co/600x180/111118/ff8c00?text=GTA+Online'">
+        ${acc.hot ? '<span class="hot-badge">🔥 مطلوب</span>' : ''}
+        <span class="sold-badge">مباع</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${acc.name}</div>
+        <div class="card-stats">
+          <div class="stat-pill">🎮 لفل <span>${acc.level}</span></div>
+          <div class="stat-pill">💰 <span>${acc.money}</span> $</div>
+          <div class="stat-pill">🚗 <span>${acc.cars}</span></div>
+        </div>
+        <div class="card-footer">
+          <div class="price">${acc.price.toLocaleString('ar-IQ')} <small>د.ع</small></div>
+          <button class="add-cart-btn" onclick="addToCart(${acc.id})" ${acc.sold ? 'disabled' : ''}>
+            ${acc.sold ? 'مباع' : '+ أضف للسلة'}
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== CART =====
+function addToCart(id) {
+  const acc = accounts.find(a => a.id === id);
+  if (!acc || acc.sold) return;
+  if (cart.find(c => c.id === id)) {
+    showToast('الحساب موجود بالسلة مسبقاً!');
+    return;
+  }
+  cart.push(acc);
+  updateCart();
+  showToast('✅ تمت الإضافة للسلة!');
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(c => c.id !== id);
+  updateCart();
+}
+
+function updateCart() {
+  const count = cart.length;
+  document.getElementById('cartCount').textContent = count;
+
+  const itemsEl = document.getElementById('cartItems');
+  const footerEl = document.getElementById('cartFooter');
+
+  if (count === 0) {
+    itemsEl.innerHTML = `
+      <div class="cart-empty">
+        <div class="cart-empty-icon">🛒</div>
+        <p>السلة فارغة<br>أضف حسابات للسلة</p>
+      </div>`;
+    footerEl.style.display = 'none';
+    return;
+  }
+
+  footerEl.style.display = 'block';
+  const total = cart.reduce((s, c) => s + c.price, 0);
+  document.getElementById('cartTotal').textContent = total.toLocaleString('ar-IQ') + ' د.ع';
+
+  itemsEl.innerHTML = cart.map(c => `
+    <div class="cart-item">
+      <img src="${c.image}" onerror="this.src='https://placehold.co/50x50/111118/ff8c00?text=GTA'">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${c.name}</div>
+        <div class="cart-item-price">${c.price.toLocaleString('ar-IQ')} د.ع</div>
+      </div>
+      <button class="remove-btn" onclick="removeFromCart(${c.id})">🗑</button>
+    </div>
+  `).join('');
+}
+
+// ===== CART TOGGLE =====
+function toggleCart() {
+  const sidebar = document.getElementById('cartSidebar');
+  const overlay = document.getElementById('overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
+
+function closeAll() {
+  document.getElementById('cartSidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+  closeModal();
+}
+
+// ===== MODAL =====
+function openModal() {
+  if (cart.length === 0) { showToast('السلة فارغة!'); return; }
+  document.getElementById('cartSidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+
+  const total = cart.reduce((s, c) => s + c.price, 0);
+  document.getElementById('orderItems').innerHTML = cart.map(c => `
+    <div class="order-item">
+      <div>${c.name}</div>
+      <strong>${c.price.toLocaleString('ar-IQ')} د.ع</strong>
+    </div>
+  `).join('');
+  document.getElementById('orderTotal').textContent = total.toLocaleString('ar-IQ') + ' د.ع';
+
+  document.getElementById('orderForm').style.display = 'block';
+  document.getElementById('successScreen').classList.remove('show');
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function setType(type) {
+  contactType = type;
+  const input = document.getElementById('customerContact');
+  if (type === 'whatsapp') {
+    document.getElementById('waBtn').classList.add('active');
+    document.getElementById('tgBtn').classList.remove('active');
+    input.placeholder = 'رقم الواتساب (مثال: 9647700000000)';
+  } else {
+    document.getElementById('tgBtn').classList.add('active');
+    document.getElementById('waBtn').classList.remove('active');
+    input.placeholder = 'يوزر التيليقرام (مثال: @username)';
+  }
+}
+
+// ===== TELEGRAM BOT =====
+const BOT_TOKEN = '8432457720:AAF_p40DN9vSMeK_zTynHlYWSnI0RQe9FpE';
+const CHAT_ID = '1976013174';
+
+async function sendTelegram(msg) {
+  try {
+    const workerUrl = 'https://tight-breeze-71af.mf7ygyvys9.workers.dev';
+    await fetch(workerUrl + '?msg=' + encodeURIComponent(msg));
+  } catch(e) { console.log(e); }
+}
+
+// ===== SEND ORDER =====
+async function sendOrder() {
+  const name = document.getElementById('customerName').value.trim();
+  const contact = document.getElementById('customerContact').value.trim();
+
+  if (!name) { showToast('⚠️ أدخل اسمك'); return; }
+  if (!contact) { showToast('⚠️ أدخل رقمك'); return; }
+
+  const btn = document.querySelector('.send-btn');
+  btn.textContent = '⏳ جاري الإرسال...';
+  btn.disabled = true;
+
+  const total = cart.reduce((s, c) => s + c.price, 0);
+  const items = cart.map(c => `• ${c.name} — ${c.price.toLocaleString('ar-IQ')} د.ع`).join('\n');
+
+  const msg = `🎮 طلب جديد - GTA Store IQ
+
+👤 الاسم: ${name}
+📱 ${contactType === 'whatsapp' ? 'واتساب' : 'تيليقرام'}: ${contact}
+
+🛒 الطلبات:
+${items}
+
+💰 المجموع: ${total.toLocaleString('ar-IQ')} د.ع`;
+
+  await sendTelegram(msg);
+
+  btn.textContent = '📨 إرسال الطلب';
+  btn.disabled = false;
+
+  document.getElementById('orderForm').style.display = 'none';
+  document.getElementById('successScreen').classList.add('show');
+  cart = [];
+  updateCart();
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ===== INIT =====
+renderAccounts();
+updateCart();
+</script>
+
+</body>
+</html>
